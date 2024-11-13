@@ -1,6 +1,7 @@
 import pygame
 import random
 import time
+import sys
 
 # Initialize the game
 pygame.init()
@@ -176,3 +177,4 @@ while running:
 
 # Quit the game
 pygame.quit()
+sys.exit()
