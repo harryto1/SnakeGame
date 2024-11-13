@@ -32,6 +32,7 @@ def generate_apple():
 
 def snake_movement():
     #Handle snake movement
+    global running
     for i in range(len(snake_body) - 1, 0, -1):
         snake_body[i].x = snake_body[i - 1].x
         snake_body[i].y = snake_body[i - 1].y
@@ -44,13 +45,34 @@ def snake_movement():
 
     #Handle snake going off the screen
     if snake_body[0].x > screen_width:
-        snake_body[0].x = 0
+        restart()
     if snake_body[0].x < 0:
-        snake_body[0].x = screen_width
+        restart()
     if snake_body[0].y > screen_height:
-        snake_body[0].y = 0
+        restart()
     if snake_body[0].y < 0:
-        snake_body[0].y = screen_height
+        restart()
+
+def restart():
+    global score, apple, snake_position, snake_body, snake_speed_x, snake_speed_y, change_to, direction
+    pygame.font.Font.set_bold(basic_font, True)
+    restart_text = basic_font.render('You Died', False, RED)  # You Died Text
+    restart_text_rect = restart_text.get_rect(center=(screen_width / 2, screen_height / 2))
+    screen.blit(restart_text, restart_text_rect)
+    pygame.display.update()
+    pygame.font.Font.set_bold(basic_font, False)
+    pygame.time.wait(750)
+    score = 0
+    apple = generate_apple()
+    snake_position = [400, 300]
+    snake_body = []
+    for i in range(0, 50):
+        snake_body.append(pygame.Rect(400 - i * 20, 300, 20, 20))
+    snake_speed_x = 3
+    snake_speed_y = 0
+    change_to = 'RIGHT'
+    direction = 'RIGHT'
+
 
 
 
@@ -60,8 +82,7 @@ font = pygame.font.Font(None, 36)
 #Objects
 apple = generate_apple()
 snake_position = [400, 300]
-snake_body = [
-]
+snake_body = []
 for i in range(0, 50):
     snake_body.append(pygame.Rect(400 - i * 20, 300, 20, 20))
 
@@ -134,14 +155,14 @@ while running:
 
     if snake_body[0].colliderect(apple):
         apple = generate_apple()
-        for i in range(25):
+        for i in range(15):
             snake_body.append(pygame.Rect(snake_body[-1].x, snake_body[-1].y, 20, 20))
         score += 1
 
     if time.time() - initial_time > 2:
         for body in snake_body[15:]:
             if snake_body[0].colliderect(body):
-                running = False
+                restart()
 
     #Score Setup
     score_text = basic_font.render(f'{score}', True, (255, 255, 255), (0, 0, 0))
