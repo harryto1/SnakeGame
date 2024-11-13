@@ -27,7 +27,7 @@ BLUE = (0, 0, 255)
 
 #Functions
 def generate_apple():
-    apple = pygame.Rect(random.randint(1, 799), random.randint(1, 599), 20, 20)
+    apple = pygame.Rect(random.randint(20, 780), random.randint(20, 580), 20, 20)
     return apple
 
 def snake_movement():
@@ -144,8 +144,8 @@ while running:
                 running = False
 
     #Score Setup
-    score_text = basic_font.render(f'Score: {score}', True, (255, 255, 255), (0, 0, 0))
-    screen.blit(score_text, (10, 10))
+    score_text = basic_font.render(f'{score}', True, (255, 255, 255), (0, 0, 0))
+    screen.blit(score_text, (25, 25))
 
     # Update the screen
     pygame.display.flip()
